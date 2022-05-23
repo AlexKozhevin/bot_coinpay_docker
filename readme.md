@@ -11,9 +11,9 @@ Example:
 - To view available pairs, send /get_pairs
 - For stop tracking - send /stop
 
-#######################################################################################
+######################################################################################.
 
-##Try this bot in test mode:
+## Try this bot in test mode:
 
 https://t.me/coinpay_docker_bot
 
