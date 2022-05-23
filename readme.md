@@ -25,7 +25,7 @@ Example:
 
     git clone https://github.com/AlexKozhevin/bot_coinpay_docker.git /home/<user>/bot_coinpay_docker
 
-    cd /home/<user>/hh_bot_docker
+    cd /home/<user>/bot_coinpay_docker
 
 ### 2. After that open and modify ***docker-compose.yml*** file to add your Telegram bot TOKEN !
 ![bot_token](https://user-images.githubusercontent.com/64017080/167243944-bd8d2a76-8cc4-455b-a030-0bed375f1575.png)
@@ -56,7 +56,7 @@ Example:
 
 ### MongoDB connection via MongoDbCompass:
 
-    mongodb://user1:passw1@localhost:27017/bot_coinpay
+    mongodb://user1:passw1@<host>:27018/bot_coinpay
 
 # If something goes wrong:
 
