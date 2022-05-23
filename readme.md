@@ -13,6 +13,10 @@ Example:
 
 #######################################################################################
 
+##Try this bot in test mode:
+
+https://t.me/coinpay_docker_bot
+
 ### To deploy You need:
 - Windows 10 + WSL2 (https://docs.microsoft.com/ru-ru/windows/wsl/install)
 - Or/ and Ubuntu (or other linux distro)
