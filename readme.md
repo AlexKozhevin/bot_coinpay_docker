@@ -1,6 +1,5 @@
-## Test task.
+## Telegram Bot, which allows you to track a certain exchange rate on Coinpay.
 
-- Telegram Bot, which allows you to track a certain exchange rate on Coinpay.
 - For start tracking, you need to enter the pair of currencies and the time interval 
 in seconds with separator "@"
 
