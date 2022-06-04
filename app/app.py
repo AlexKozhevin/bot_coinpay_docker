@@ -75,7 +75,6 @@ async def main(message):
     await asyncio.sleep(86400)
     await message.answer("If You want continue tracking, send another request")
     task.cancel()
-    await task
 
 
 @dp.message_handler()
