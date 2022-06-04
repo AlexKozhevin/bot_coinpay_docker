@@ -61,11 +61,11 @@ async def stop(message: types.Message):
 
 @dp.message_handler(regexp='@')
 async def send_price(message: types.Message):
-    user_pair = ''
-    user_timer = ''
     # check if user_pair and user_timer are set and stored in DB
     if check_user_message(message):
         while True:
+            user_pair = ''
+            user_timer = None
             # read user_pair and user_timer from DB
             try:
                 user_pair = coll.find_one({"_id": message.chat.id})['user_pair']
@@ -73,7 +73,7 @@ async def send_price(message: types.Message):
             except ConnectionFailure:
                 await message.answer("Lost connection with DB!")
                 # Use flag variable stored in DB to stop the loop if needed
-            if user_pair:
+            if user_pair and user_timer:
                 price = await get_price(user_pair)
                 if price:
                     await message.answer(f"{user_pair.upper()}: {price}")
