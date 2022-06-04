@@ -54,43 +54,55 @@ async def get_available_pairs(message: types.Message):
 
 @dp.message_handler(commands=['stop'])
 async def stop(message: types.Message):
-    # Clean flag variables stored in DB
+    try:
+        task.cancel()
+        print("STOP TASK")
+    except Exception as e:
+        print(e)
     coll.update_one({'_id': message.chat.id}, {'$set': {'user_pair': '', 'user_timer': ''}})
     await message.answer('You entered the /stop command. Submit a new request to continue tracking')
 
 
 @dp.message_handler(regexp='@')
-async def send_price(message: types.Message):
-    # check if user_pair and user_timer are set and stored in DB
-    if check_user_message(message):
-        while True:
-            user_pair = ''
-            user_timer = None
-            # read user_pair and user_timer from DB
-            try:
-                user_pair = coll.find_one({"_id": message.chat.id})['user_pair']
-                user_timer = coll.find_one({"_id": message.chat.id})['user_timer']
-            except ConnectionFailure:
-                await message.answer("Lost connection with DB!")
-                # Use flag variable stored in DB to stop the loop if needed
-            if user_pair and user_timer:
-                price = await get_price(user_pair)
-                if price:
-                    await message.answer(f"{user_pair.upper()}: {price}")
-                    await asyncio.sleep(user_timer)
-                else:
-                    await message.answer("You entered an invalid pair")
-                    break
-            else:
-                break
-        print('Operation canceled')
-    else:
-        await message.answer('You have entered an invalid request. Try again. For help, send /help')
+async def main(message):
+    global task
+    try:
+        task.cancel()
+        print("Canceled previous task")
+    except Exception as e:
+        print(e)
+    task = asyncio.create_task(send_price(message))
+    await asyncio.sleep(86400)
+    await message.answer("If You want continue tracking, send another request")
+    task.cancel()
+    await task
 
 
 @dp.message_handler()
 async def echo(message: types.Message):
     await message.answer('You have entered an invalid request. Try again. For help, send /help')
+
+
+async def send_price(message):
+    # check if user_pair and user_timer are set and stored in DB
+    if check_user_message(message):
+        user_pair = None
+        user_timer = None
+        try:
+            user_pair = coll.find_one({"_id": message.chat.id})['user_pair']
+            user_timer = coll.find_one({"_id": message.chat.id})['user_timer']
+        except ConnectionFailure:
+            await message.answer("Lost connection with DB! Try again later")
+        while True:
+            price = await get_price(user_pair)
+            if price:
+                await message.answer(f"{user_pair.upper()}: {price}")
+                await asyncio.sleep(user_timer)
+            else:
+                await message.answer("You entered an invalid pair")
+                break
+    else:
+        await message.answer('You have entered an invalid request. Try again. For help, send /help')
 
 
 def create_user(message) -> None:
