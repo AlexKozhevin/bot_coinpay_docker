@@ -72,9 +72,6 @@ async def main(message):
     except Exception as e:
         print(e)
     task = asyncio.create_task(send_price(message))
-    await asyncio.sleep(86400)
-    await message.answer("If You want continue tracking, send another request")
-    task.cancel()
 
 
 @dp.message_handler()
